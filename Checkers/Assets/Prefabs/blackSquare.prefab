@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3097721295868473228}
   - component: {fileID: 4347741567334890476}
-  - component: {fileID: 2542080800085706188}
+  - component: {fileID: 7700939212435035056}
   m_Layer: 0
   m_Name: blackSquare
   m_TagString: Tile
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2542080800085706188
+--- !u!61 &7700939212435035056
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -114,7 +114,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

@@ -15,7 +15,7 @@ public class Checker : MonoBehaviour
     [SerializeField] private bool isSelected = false;
     private Vector2[] validDiagonalPositions;
 
-    private bool isPlayerChecker;
+  
     void Start()
     {
         checkerColor=GetComponent<SpriteRenderer>();
@@ -43,15 +43,7 @@ public class Checker : MonoBehaviour
         if (!isSelected)
         {
             checkerManager.SelectChecker(this);
-            if (gameObject.CompareTag("BlackChecker"))
-            {
-                isPlayerChecker = true;
-            }
-            else if (gameObject.CompareTag("RedChecker"))
-            {
-                isPlayerChecker = false;
-            }
-
+           
           
         }
      
@@ -68,26 +60,30 @@ public class Checker : MonoBehaviour
     {
         isSelected = true;
         checkerColor.color = selectedTint;
-        Vector2[] diagonals = CalculateValidDiagonalPositions(isPlayerChecker);
-        HighLightSquares(diagonals);
+
+        if (validDiagonalPositions == null) // Only calculate if not already calculated
+        {
+            validDiagonalPositions = CalculateValidDiagonalPositions();
+           
+        }
+        HighLightSquares(validDiagonalPositions);
 
     }
-    public Vector2[] CalculateValidDiagonalPositions(bool isPlayerChecker)
+    public Vector2[] CalculateValidDiagonalPositions()
     {
         validDiagonalPositions = new Vector2[4]; 
 
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
 
-        int forward = isPlayerChecker ? 1 : -1; // Adjust the forward direction based on side
-
+         
         // Calculate forward-left diagonals (two squares)
-        validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
-        validDiagonalPositions[1] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+        validDiagonalPositions[0] = new Vector2(currentPosition.x - 1, currentPosition.y + 1);
+        validDiagonalPositions[1] = new Vector2(currentPosition.x - 1 * 2, currentPosition.y + 1 * 2);
 
         // Calculate forward-right diagonals (two squares)
-        validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
-        validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
-
+        validDiagonalPositions[2] = new Vector2(currentPosition.x + 1, currentPosition.y + 1);
+        validDiagonalPositions[3] = new Vector2(currentPosition.x + 1 * 2, currentPosition.y + 1 * 2);
+       
         return validDiagonalPositions;
     }
 
@@ -113,7 +109,7 @@ public class Checker : MonoBehaviour
 
     void ResetSquareColors()
     {
-        Vector2[] diagonals = CalculateValidDiagonalPositions(isPlayerChecker);
+        Vector2[] diagonals = CalculateValidDiagonalPositions();
         GameObject[] squares = gridManager.GetGridSquares();
 
         foreach (Vector2 diagonalPos in diagonals)
@@ -142,8 +138,29 @@ public class Checker : MonoBehaviour
     }
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
-        transform.position = clickedPosition;
-        ResetSquareColors(); 
-        isSelected = false;
+        bool isValidMove = false;
+
+       
+        foreach (Vector2 validPos in validDiagonalPositions)
+        {
+            if (clickedPosition == validPos)
+            {
+                isValidMove = true;
+                break;
+            }
+        }
+
+        if (isValidMove)
+        {
+            transform.position = clickedPosition;
+            ResetSquareColors();
+            isSelected = false;
+        }
+       
+        else
+        {
+            Debug.Log("Invalid move!");
+           
+        }
     }
 }
