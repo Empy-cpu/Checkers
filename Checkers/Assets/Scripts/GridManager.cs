@@ -62,6 +62,22 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    public Checker GetCheckerAtPosition(Vector2 position)
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.2f); 
+
+        foreach (Collider2D col in colliders)
+        {
+            Checker checker = col.GetComponent<Checker>();
+            if (checker != null)
+            {
+                return checker;
+            }
+        }
+
+        return null;
+    }
 }
 
 

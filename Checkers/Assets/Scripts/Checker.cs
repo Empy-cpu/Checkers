@@ -14,6 +14,7 @@ public class Checker : MonoBehaviour
     private GridManager gridManager;
     [SerializeField] private bool isSelected = false;
     private Vector2[] validDiagonalPositions;
+    
 
   
     void Start()
@@ -26,7 +27,7 @@ public class Checker : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) // Check for left mouse button click
+        if (Input.GetMouseButtonDown(0)) 
         {
             Vector2 rayPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             RaycastHit2D hit = Physics2D.Raycast(rayPos, Vector2.zero);
@@ -38,22 +39,17 @@ public class Checker : MonoBehaviour
             }
         }
     }
-    void OnMouseDown()
-    {
-        if (!isSelected)
-        {
-            checkerManager.SelectChecker(this);
-           
-          
-        }
-     
+    void OnMouseDown(){
+        if (!isSelected){
+            checkerManager.SelectChecker(this);         
+        }    
     }
 
     public void DeselectChecker()
     {
         isSelected = false;
         checkerColor.color = originalColor;
-       ResetSquareColors();
+        ResetSquareColors();
     }
 
     public void SelectChecker()
@@ -61,8 +57,9 @@ public class Checker : MonoBehaviour
         isSelected = true;
         checkerColor.color = selectedTint;
 
-        if (validDiagonalPositions == null) // Only calculate if not already calculated
+        if (validDiagonalPositions == null) 
         {
+            
             validDiagonalPositions = CalculateValidDiagonalPositions();
            
         }
@@ -75,16 +72,27 @@ public class Checker : MonoBehaviour
 
         Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
 
-         
+        int forward;
+        if (this.CompareTag("BlackChecker"))
+        {
+            forward = 1;
+        }
+        else
+        {
+            forward = -1;
+        }
         // Calculate forward-left diagonals (two squares)
-        validDiagonalPositions[0] = new Vector2(currentPosition.x - 1, currentPosition.y + 1);
-        validDiagonalPositions[1] = new Vector2(currentPosition.x - 1 * 2, currentPosition.y + 1 * 2);
+        validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
+        validDiagonalPositions[1] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
 
         // Calculate forward-right diagonals (two squares)
-        validDiagonalPositions[2] = new Vector2(currentPosition.x + 1, currentPosition.y + 1);
-        validDiagonalPositions[3] = new Vector2(currentPosition.x + 1 * 2, currentPosition.y + 1 * 2);
-       
+        validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+        validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+
         return validDiagonalPositions;
+
+
+        
     }
 
     void HighLightSquares(Vector2[] diagonalPositions)
@@ -139,28 +147,39 @@ public class Checker : MonoBehaviour
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
         bool isValidMove = false;
+        Checker opponentChecker = null;
 
-       
         foreach (Vector2 validPos in validDiagonalPositions)
         {
             if (clickedPosition == validPos)
             {
                 isValidMove = true;
+
+               
+                Vector2 midPosition = (clickedPosition + (Vector2)transform.position) / 2;
+                opponentChecker = gridManager.GetCheckerAtPosition(midPosition);
+
                 break;
             }
         }
 
         if (isValidMove)
         {
-            transform.position = clickedPosition;
+            Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.19f);
+            transform.position = newPosition;
             ResetSquareColors();
             isSelected = false;
+
+            if (opponentChecker != null)
+            {
+                opponentChecker.gameObject.SetActive(false);
+                Debug.Log("capture");
+            }
         }
-       
         else
         {
             Debug.Log("Invalid move!");
-           
         }
     }
+
 }

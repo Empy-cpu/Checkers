@@ -98,10 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d136c84b56c1c47819269c6b60a73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTint: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 0.38431373}
+  selectedTint: {r: 0.92941177, g: 0.9490196, b: 1, a: 0.7764706}
   defaultTileColor: {r: 0.5568628, g: 0, b: 0, a: 1}
-  checkerManager: {fileID: 4170494477581399902, guid: d34b63ec67cc510449367ed1eef1104f, type: 3}
-  gridManager: {fileID: 5327060183498473393, guid: c6baf2efb4201714cbdada9e83b133ac, type: 3}
   isSelected: 0
 --- !u!58 &-6303881835091794545
 CircleCollider2D:
