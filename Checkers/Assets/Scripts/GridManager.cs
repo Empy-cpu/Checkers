@@ -87,7 +87,7 @@ public class GridManager : MonoBehaviour
     public float GetBottomLastRows()
     {
         bottomLastRows = squareSize * 0;
-        Debug.Log("bottom LAST" + bottomLastRows);
+       
         return bottomLastRows;
     }
 

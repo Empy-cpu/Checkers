@@ -83,32 +83,59 @@ public class Checker : MonoBehaviour
     }
     public Vector2[] CalculateValidDiagonalPositions()
     {
-        validDiagonalPositions = new Vector2[4]; 
-
-        Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-
-        int forward;
-        if (this.CompareTag("BlackChecker"))
+        if (state == CheckerState.Regular)
         {
-            forward = 1;
+            validDiagonalPositions = new Vector2[4];
+
+            Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
+
+            int forward;
+            if (this.CompareTag("BlackChecker"))
+            {
+                forward = 1;
+            }
+            else
+            {
+                forward = -1;
+            }
+
+            // Calculate forward-left diagonals (two squares)
+            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
+            validDiagonalPositions[1] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+
+            // Calculate forward-right diagonals (two squares)
+            validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+            validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+
         }
         else
         {
-            forward = -1;
-        }
-        // Calculate forward-left diagonals (two squares)
-        validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
-        validDiagonalPositions[1] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+            validDiagonalPositions = new Vector2[8]; // King checker can move both directions diagonally
 
-        // Calculate forward-right diagonals (two squares)
-        validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
-        validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+            // Calculate forward-left diagonals (two squares)
+            validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);
+            validDiagonalPositions[1] = new Vector2(transform.position.x - 2, transform.position.y + 2);
+
+            // Calculate forward-right diagonals (two squares)
+            validDiagonalPositions[2] = new Vector2(transform.position.x + 1, transform.position.y + 1);
+            validDiagonalPositions[3] = new Vector2(transform.position.x + 2, transform.position.y + 2);
+
+            // Calculate backward-left diagonals (two squares)
+            validDiagonalPositions[4] = new Vector2(transform.position.x - 1, transform.position.y - 1);
+            validDiagonalPositions[5] = new Vector2(transform.position.x - 2, transform.position.y - 2);
+
+            // Calculate backward-right diagonals (two squares)
+            validDiagonalPositions[6] = new Vector2(transform.position.x + 1, transform.position.y - 1);
+            validDiagonalPositions[7] = new Vector2(transform.position.x + 2, transform.position.y - 2);
+        }
 
         return validDiagonalPositions;
 
 
         
     }
+
+    
 
     void HighLightSquares(Vector2[] diagonalPositions)
     {
