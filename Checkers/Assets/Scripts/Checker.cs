@@ -110,21 +110,21 @@ public class Checker : MonoBehaviour
         }
         else
         {
-            validDiagonalPositions = new Vector2[8]; // King checker can move both directions diagonally
+            validDiagonalPositions = new Vector2[8]; 
 
-            // Calculate forward-left diagonals (two squares)
+           
             validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);
             validDiagonalPositions[1] = new Vector2(transform.position.x - 2, transform.position.y + 2);
 
-            // Calculate forward-right diagonals (two squares)
+         
             validDiagonalPositions[2] = new Vector2(transform.position.x + 1, transform.position.y + 1);
             validDiagonalPositions[3] = new Vector2(transform.position.x + 2, transform.position.y + 2);
 
-            // Calculate backward-left diagonals (two squares)
+          
             validDiagonalPositions[4] = new Vector2(transform.position.x - 1, transform.position.y - 1);
             validDiagonalPositions[5] = new Vector2(transform.position.x - 2, transform.position.y - 2);
 
-            // Calculate backward-right diagonals (two squares)
+          
             validDiagonalPositions[6] = new Vector2(transform.position.x + 1, transform.position.y - 1);
             validDiagonalPositions[7] = new Vector2(transform.position.x + 2, transform.position.y - 2);
         }
