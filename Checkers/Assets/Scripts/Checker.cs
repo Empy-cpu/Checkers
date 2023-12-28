@@ -12,7 +12,7 @@ public class Checker : MonoBehaviour
 
     private CheckerManager checkerManager;
     private GridManager gridManager;
-    [SerializeField] private bool isSelected = false;
+    [SerializeField] public bool isSelected = false;
     private Vector2[] validDiagonalPositions;
     
 
@@ -141,6 +141,7 @@ public class Checker : MonoBehaviour
         if (isSelected)
         {
             MoveToValidDiagonal(clickedPosition);
+            checkerManager.SwitchTurns();
         }
        
     }

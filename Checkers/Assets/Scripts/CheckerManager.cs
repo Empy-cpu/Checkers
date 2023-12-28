@@ -37,7 +37,7 @@ public class CheckerManager : MonoBehaviour
         {
             DeselectAllCheckers();
             selectedChecker.SelectChecker();
-            SwitchTurns(); 
+           
         }
         else
         {
