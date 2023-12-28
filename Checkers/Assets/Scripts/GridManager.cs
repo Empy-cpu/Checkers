@@ -12,6 +12,9 @@ public class GridManager : MonoBehaviour
     public int columns;
     public float squareSize = 1.0f;
     private List<GameObject> squares = new List<GameObject>();
+
+    public float bottomLastRows;
+    public float topLastRows;
     void Start()
     {
         GenerateCheckerboard();
@@ -32,6 +35,8 @@ public class GridManager : MonoBehaviour
                 squares.Add(square);
             }
         }
+
+       
     }
 
 
@@ -77,6 +82,19 @@ public class GridManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    public float GetBottomLastRows()
+    {
+        bottomLastRows = squareSize;
+       
+        return bottomLastRows;
+    }
+
+    public float GetTopLastRows()
+    {
+        topLastRows = squareSize * (rows - 1);
+        return topLastRows;
     }
 }
 

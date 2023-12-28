@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
+public enum CheckerState
+{
+    Regular,
+    King
+}
 public class Checker : MonoBehaviour
 {
     public Color selectedTint;
@@ -14,9 +20,11 @@ public class Checker : MonoBehaviour
     private GridManager gridManager;
     [SerializeField] public bool isSelected = false;
     private Vector2[] validDiagonalPositions;
-    
 
-  
+    public CheckerState state = CheckerState.Regular;
+    public Color kingTint;
+
+   
     void Start()
     {
         checkerColor=GetComponent<SpriteRenderer>();
@@ -48,7 +56,14 @@ public class Checker : MonoBehaviour
     public void DeselectChecker()
     {
         isSelected = false;
-        checkerColor.color = originalColor;
+        if (state == CheckerState.Regular)
+        {
+            checkerColor.color = originalColor;
+        }
+        else if (state == CheckerState.King)
+        {
+            checkerColor.color = kingTint;
+        }
         ResetSquareColors();
     }
 
@@ -160,27 +175,48 @@ public class Checker : MonoBehaviour
                 Vector2 midPosition = (clickedPosition + (Vector2)transform.position) / 2;
                 opponentChecker = gridManager.GetCheckerAtPosition(midPosition);
 
+                Checker currentCheckerAtMid = gridManager.GetCheckerAtPosition(midPosition);
+                if (currentCheckerAtMid != null && currentCheckerAtMid.CompareTag(gameObject.tag))
+                {
+                    opponentChecker = null;
+                    break;
+                }
                 break;
             }
         }
 
         if (isValidMove)
         {
-            Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.19f);
+            Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.16f);
             transform.position = newPosition;
             ResetSquareColors();
             isSelected = false;
+            if (state == CheckerState.Regular && ((transform.position.y <= gridManager.GetBottomLastRows()) || (transform.position.y >= gridManager.GetTopLastRows())))
+            {
+                PromoteToKing();
+            }
+
 
             if (opponentChecker != null)
             {
                 opponentChecker.gameObject.SetActive(false);
                 Debug.Log("capture");
+                checkerManager.CheckWinConditions(opponentChecker);
+               
             }
+
         }
         else
         {
             Debug.Log("Invalid move!");
         }
+    }
+
+    public void PromoteToKing()
+    {
+        state = CheckerState.King;
+        checkerColor.color = kingTint;
+        Debug.Log("Promoted to King");
     }
 
 }

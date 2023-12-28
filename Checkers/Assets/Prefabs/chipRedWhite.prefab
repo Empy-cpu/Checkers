@@ -101,6 +101,8 @@ MonoBehaviour:
   selectedTint: {r: 0.92941177, g: 0.9490196, b: 1, a: 0.7764706}
   defaultTileColor: {r: 0.5568628, g: 0, b: 0, a: 1}
   isSelected: 0
+  state: 0
+  kingTint: {r: 0.7735849, g: 0.40057933, b: 0.14158058, a: 0.8039216}
 --- !u!58 &4227643122825164593
 CircleCollider2D:
   m_ObjectHideFlags: 0

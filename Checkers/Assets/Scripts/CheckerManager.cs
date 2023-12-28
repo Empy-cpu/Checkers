@@ -9,6 +9,9 @@ public class CheckerManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     private bool isPlayer1Turn = true;
 
+     int player1Checkers = 12;
+     int player2Checkers = 12;
+
     private void Start()
     {
         gridManager = FindObjectOfType<GridManager>(); // Find and assign the GridManager
@@ -51,25 +54,21 @@ public class CheckerManager : MonoBehaviour
         isPlayer1Turn = !isPlayer1Turn; 
         Debug.Log("Player " + (isPlayer1Turn ? "1" : "2") + "'s turn"); 
     }
-    private bool CheckWinConditions()
+    public bool CheckWinConditions(Checker capturedChecker)
     {
-        int player1Checkers = 0;
-        int player2Checkers = 0;
-
-        foreach (Checker checker in allCheckers)
-        {
-            if (checker.gameObject.activeSelf)
-            {
-                if (checker.CompareTag("BlackChecker"))
-                {
-                    player1Checkers++;
-                }
-                else if (checker.CompareTag("RedChecker"))
-                {
-                    player2Checkers++;
-                }
-            }
-        }
+                         
+       if (capturedChecker.CompareTag("BlackChecker"))
+       {
+            player1Checkers--;
+           Debug.Log("blacker checker captured"+player1Checkers);
+       }
+       else if (capturedChecker.CompareTag("RedChecker"))
+       {
+            player2Checkers--;
+            Debug.Log("Red checker captured"+player2Checkers);
+       }
+            
+        
 
         if (player1Checkers == 0)
         {
