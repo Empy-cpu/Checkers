@@ -23,8 +23,8 @@ public class Checker : MonoBehaviour
 
     public CheckerState state = CheckerState.Regular;
     public Color kingTint;
+    public float moveSpeed = 5.0f;
 
-   
     void Start()
     {
         checkerColor=GetComponent<SpriteRenderer>();
@@ -128,14 +128,29 @@ public class Checker : MonoBehaviour
             }
 
         }
-        else
+        else//for king
         {
-            validDiagonalPositions = new Vector2[8];            
-            validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);       
-            validDiagonalPositions[2] = new Vector2(transform.position.x + 1, transform.position.y + 1);         
-            validDiagonalPositions[4] = new Vector2(transform.position.x - 1, transform.position.y - 1);        
-            validDiagonalPositions[6] = new Vector2(transform.position.x + 1, transform.position.y - 1);
-         
+            validDiagonalPositions = new Vector2[8]; 
+
+           
+            validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);               
+            validDiagonalPositions[1] = new Vector2(transform.position.x + 1, transform.position.y + 1);         
+            validDiagonalPositions[2] = new Vector2(transform.position.x - 1, transform.position.y - 1);         
+            validDiagonalPositions[3] = new Vector2(transform.position.x + 1, transform.position.y - 1);
+           
+
+            for (int i = 0; i < 4; i += 2)
+            {
+                Vector2 checkerPos = validDiagonalPositions[i];
+                Checker opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
+                if (opponentChecker != null)
+                {
+                    validDiagonalPositions[4] = new Vector2(transform.position.x - 2, transform.position.y + 2);
+                    validDiagonalPositions[5] = new Vector2(transform.position.x + 2, transform.position.y + 2);
+                    validDiagonalPositions[6] = new Vector2(transform.position.x - 2, transform.position.y - 2);
+                    validDiagonalPositions[7] = new Vector2(transform.position.x + 2, transform.position.y - 2);
+                }
+            }
         }
 
         return validDiagonalPositions;
@@ -197,7 +212,21 @@ public class Checker : MonoBehaviour
        
     }
 
-  
+    private IEnumerator MoveSmoothly(Vector3 start, Vector3 end)
+    {
+
+        float elapsedTime = 0;
+
+
+        while (elapsedTime < 1)
+        {
+            elapsedTime += Time.deltaTime * moveSpeed;
+            transform.position = Vector3.Lerp(start, end, Mathf.SmoothStep(0, 1, elapsedTime));
+            yield return null;
+        }
+
+        transform.position = end; 
+    }
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
         bool isValidMove = false;
@@ -226,7 +255,7 @@ public class Checker : MonoBehaviour
         if (isValidMove)
         {
             Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.16f);
-            transform.position = newPosition;
+            StartCoroutine(MoveSmoothly(transform.position, newPosition));
             ResetSquareColors();
             isSelected = false;
             if (state == CheckerState.Regular && ((transform.position.y <= gridManager.GetBottomLastRows()) || (transform.position.y >= gridManager.GetTopLastRows())))
