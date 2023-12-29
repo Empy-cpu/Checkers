@@ -166,10 +166,14 @@ public class Checker : MonoBehaviour
                 Vector2 squarePosition = new Vector2(square.transform.position.x, square.transform.position.y);
                 if (squarePosition == diagonalPos)
                 {
-                    SpriteRenderer squareRenderer = square.GetComponent<SpriteRenderer>();
-                    if (squareRenderer != null)
+                    Checker checkerAtPos = gridManager.GetCheckerAtPosition(diagonalPos);
+                    if (checkerAtPos == null)
                     {
-                        squareRenderer.color = selectedTint;
+                        SpriteRenderer squareRenderer = square.GetComponent<SpriteRenderer>();
+                        if (squareRenderer != null)
+                        {
+                            squareRenderer.color = selectedTint;
+                        }
                     }
                 }
             }
@@ -209,10 +213,7 @@ public class Checker : MonoBehaviour
 
     private IEnumerator MoveSmoothly(Vector3 start, Vector3 end)
     {
-
         float elapsedTime = 0;
-
-
         while (elapsedTime < 1)
         {
             elapsedTime += Time.deltaTime * moveSpeed;
