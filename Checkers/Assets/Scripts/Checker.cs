@@ -99,13 +99,10 @@ public class Checker : MonoBehaviour
                 forward = -1;
             }
 
-            // Calculate forward-left diagonals (two squares)
-            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
-            validDiagonalPositions[1] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
-
-            // Calculate forward-right diagonals (two squares)
+           
+            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);           
             validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
-            validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+          
 
         }
         else
