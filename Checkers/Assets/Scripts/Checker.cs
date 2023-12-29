@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI.Table;
 
@@ -24,6 +25,8 @@ public class Checker : MonoBehaviour
     public CheckerState state = CheckerState.Regular;
     public Color kingTint;
     public float moveSpeed = 5.0f;
+
+    private bool canMove = true;
 
     void Start()
     {
@@ -211,7 +214,7 @@ public class Checker : MonoBehaviour
         if (isSelected)
         {
             MoveToValidDiagonal(clickedPosition);
-            checkerManager.SwitchTurns();
+            
         }
        
     }
@@ -228,6 +231,8 @@ public class Checker : MonoBehaviour
 
         transform.position = end; 
     }
+
+   
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
         bool isValidMove = false;
@@ -239,11 +244,9 @@ public class Checker : MonoBehaviour
             {
                 isValidMove = true;
 
-               
                 Vector2 midPosition = (clickedPosition + (Vector2)transform.position) / 2;
                 opponentChecker = gridManager.GetCheckerAtPosition(midPosition);
 
-              
                 if (opponentChecker != null && opponentChecker.CompareTag(gameObject.tag))
                 {
                     opponentChecker = null;
@@ -257,6 +260,7 @@ public class Checker : MonoBehaviour
         {
             Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.16f);
             StartCoroutine(MoveSmoothly(transform.position, newPosition));
+
             ResetSquareColors();
             isSelected = false;
             if (state == CheckerState.Regular && ((transform.position.y <= gridManager.GetBottomLastRows()) || (transform.position.y >= gridManager.GetTopLastRows())))
@@ -264,15 +268,19 @@ public class Checker : MonoBehaviour
                 PromoteToKing();
             }
 
-
             if (opponentChecker != null)
             {
                 opponentChecker.gameObject.SetActive(false);
                 Debug.Log("capture");
+                CheckForMultipleJumps(newPosition);
                 checkerManager.CheckWinConditions(opponentChecker);
                
+
+
+
             }
 
+            checkerManager.SwitchTurns();
         }
         else
         {
@@ -280,6 +288,43 @@ public class Checker : MonoBehaviour
         }
     }
 
+
+    private void CheckForMultipleJumps(Vector2 newPosition)
+    {
+        Debug.Log("go");
+        Vector2[] newValidPositions = CalculateValidDiagonalPositions();
+        bool moreJumpsAvailable = false;
+
+        foreach (Vector2 newPosValid in newValidPositions)
+        {
+            if (newPosition == newPosValid)
+            {
+                Vector2 midPos = (newPosition + (Vector2)transform.position) / 2;
+                Checker furtherOpponentChecker = gridManager.GetCheckerAtPosition(midPos);
+
+                if (furtherOpponentChecker != null && furtherOpponentChecker.CompareTag(gameObject.tag))
+                {
+                    continue; 
+                }
+
+                moreJumpsAvailable = true;
+                break;
+            }
+        }
+
+        if (moreJumpsAvailable)
+        {
+            Debug.Log("u can jump");
+            canMove = true;
+            HighLightSquares(newValidPositions); 
+        }
+        else
+        {
+            canMove = false; 
+            checkerManager.SwitchTurns();
+            Debug.Log("no multiple jumps");
+        }
+    }
     public void PromoteToKing()
     {
         state = CheckerState.King;
