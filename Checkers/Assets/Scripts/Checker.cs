@@ -107,11 +107,11 @@ public class Checker : MonoBehaviour
             validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
 
 
-            Checker opponentChecker = null;
+            Checker checkerMid = null;
             Vector2 checkerPos = validDiagonalPositions[0];
 
-            opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
-            if (opponentChecker != null)
+            checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
+            if (checkerMid != null)
             {
                 validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
                 validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
@@ -119,8 +119,8 @@ public class Checker : MonoBehaviour
             else
             {
                 checkerPos = validDiagonalPositions[1];
-                opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
-                if (opponentChecker != null)
+                checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
+                if (checkerMid != null)
                 {
                     validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
                     validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
@@ -130,25 +130,20 @@ public class Checker : MonoBehaviour
         }
         else//for king
         {
-            validDiagonalPositions = new Vector2[8]; 
+            validDiagonalPositions = new Vector2[8];
 
-           
-            validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);               
-            validDiagonalPositions[1] = new Vector2(transform.position.x + 1, transform.position.y + 1);         
-            validDiagonalPositions[2] = new Vector2(transform.position.x - 1, transform.position.y - 1);         
+            validDiagonalPositions[0] = new Vector2(transform.position.x - 1, transform.position.y + 1);
+            validDiagonalPositions[1] = new Vector2(transform.position.x + 1, transform.position.y + 1);
+            validDiagonalPositions[2] = new Vector2(transform.position.x - 1, transform.position.y - 1);
             validDiagonalPositions[3] = new Vector2(transform.position.x + 1, transform.position.y - 1);
-           
 
             for (int i = 0; i < 4; i += 2)
             {
                 Vector2 checkerPos = validDiagonalPositions[i];
-                Checker opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
-                if (opponentChecker != null)
+                Checker checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
+                if (checkerMid != null)
                 {
-                    validDiagonalPositions[4] = new Vector2(transform.position.x - 2, transform.position.y + 2);
-                    validDiagonalPositions[5] = new Vector2(transform.position.x + 2, transform.position.y + 2);
-                    validDiagonalPositions[6] = new Vector2(transform.position.x - 2, transform.position.y - 2);
-                    validDiagonalPositions[7] = new Vector2(transform.position.x + 2, transform.position.y - 2);
+                    validDiagonalPositions[i + 4] = new Vector2(transform.position.x + (i < 2 ? 2 : -2), transform.position.y + 2);
                 }
             }
         }
