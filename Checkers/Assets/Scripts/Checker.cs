@@ -140,12 +140,17 @@ public class Checker : MonoBehaviour
             for (int i = 0; i < 4; i += 2)
             {
                 Vector2 checkerPos = validDiagonalPositions[i];
+
                 Checker checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
                 if (checkerMid != null)
                 {
-                    validDiagonalPositions[i + 4] = new Vector2(transform.position.x + (i < 2 ? 2 : -2), transform.position.y + 2);
+                    validDiagonalPositions[4] = new Vector2(transform.position.x - 2, transform.position.y + 2);
+                    validDiagonalPositions[5] = new Vector2(transform.position.x + 2, transform.position.y + 2);
+                    validDiagonalPositions[6] = new Vector2(transform.position.x - 2, transform.position.y - 2);
+                    validDiagonalPositions[7] = new Vector2(transform.position.x + 2, transform.position.y - 2);
                 }
             }
+            
         }
 
         return validDiagonalPositions;
