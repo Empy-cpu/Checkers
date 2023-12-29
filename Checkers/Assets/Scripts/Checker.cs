@@ -99,10 +99,33 @@ public class Checker : MonoBehaviour
                 forward = -1;
             }
 
+            // Calculate forward-left diagonals (two squares)
+            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
            
-            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);           
-            validDiagonalPositions[2] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
-          
+
+            // Calculate forward-right diagonals (two squares)
+            validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+
+
+            Checker opponentChecker = null;
+            Vector2 checkerPos = validDiagonalPositions[0];
+
+            opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
+            if (opponentChecker != null)
+            {
+                validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+                validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+            }
+            else
+            {
+                checkerPos = validDiagonalPositions[1];
+                opponentChecker = gridManager.GetCheckerAtPosition(checkerPos);
+                if (opponentChecker != null)
+                {
+                    validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+                    validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+                }
+            }
 
         }
         else
@@ -184,6 +207,8 @@ public class Checker : MonoBehaviour
         }
        
     }
+
+  
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
         bool isValidMove = false;
@@ -199,8 +224,8 @@ public class Checker : MonoBehaviour
                 Vector2 midPosition = (clickedPosition + (Vector2)transform.position) / 2;
                 opponentChecker = gridManager.GetCheckerAtPosition(midPosition);
 
-                Checker currentCheckerAtMid = gridManager.GetCheckerAtPosition(midPosition);
-                if (currentCheckerAtMid != null && currentCheckerAtMid.CompareTag(gameObject.tag))
+              
+                if (opponentChecker != null && opponentChecker.CompareTag(gameObject.tag))
                 {
                     opponentChecker = null;
                     break;
