@@ -25,9 +25,7 @@ public class Checker : MonoBehaviour
     public CheckerState state = CheckerState.Regular;
     public Color kingTint;
     public float moveSpeed = 5.0f;
-
-    private bool canMove = true;
-
+    public bool moreJumpsAvailable = false;
     void Start()
     {
         checkerColor=GetComponent<SpriteRenderer>();
@@ -78,19 +76,19 @@ public class Checker : MonoBehaviour
         if (validDiagonalPositions == null) 
         {
             
-            validDiagonalPositions = CalculateValidDiagonalPositions();
+            validDiagonalPositions = CalculateValidDiagonalPositions(this.transform.position);
            
         }
         HighLightSquares(validDiagonalPositions);
 
     }
-    public Vector2[] CalculateValidDiagonalPositions()
+    public Vector2[] CalculateValidDiagonalPositions(Vector2  checkerPosition)
     {
         if (state == CheckerState.Regular)
         {
             validDiagonalPositions = new Vector2[4];
 
-            Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
+            Vector2 currentPosition = new Vector2(checkerPosition.x, checkerPosition.y);
 
             int forward;
             if (this.CompareTag("BlackChecker"))
@@ -104,31 +102,28 @@ public class Checker : MonoBehaviour
 
             // Calculate forward-left diagonals (two squares)
             validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
-           
-
             // Calculate forward-right diagonals (two squares)
             validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
 
 
-            Checker checkerMid = null;
-            Vector2 checkerPos = validDiagonalPositions[0];
+          Vector2 checkerPos = validDiagonalPositions[0];
 
-            checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
-            if (checkerMid != null)
+           Checker checkerMid1 = gridManager.GetCheckerAtPosition(checkerPos);
+            if (checkerMid1 != null)
             {
                 validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
-                validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+               
             }
-            else
-            {
-                checkerPos = validDiagonalPositions[1];
-                checkerMid = gridManager.GetCheckerAtPosition(checkerPos);
-                if (checkerMid != null)
+           
+            
+           checkerPos = validDiagonalPositions[1];
+              Checker checkerMid2 = gridManager.GetCheckerAtPosition(checkerPos);
+                if (checkerMid2 != null)
                 {
-                    validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
+                   
                     validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
                 }
-            }
+            
 
         }
         else//for king
@@ -190,7 +185,7 @@ public class Checker : MonoBehaviour
 
     void ResetSquareColors()
     {
-        Vector2[] diagonals = CalculateValidDiagonalPositions();
+        Vector2[] diagonals = CalculateValidDiagonalPositions(this.transform.position);
         GameObject[] squares = gridManager.GetGridSquares();
 
         foreach (Vector2 diagonalPos in diagonals)
@@ -232,10 +227,11 @@ public class Checker : MonoBehaviour
         transform.position = end; 
     }
 
-   
+  
     public void MoveToValidDiagonal(Vector2 clickedPosition)
     {
         bool isValidMove = false;
+       
         Checker opponentChecker = null;
 
         foreach (Vector2 validPos in validDiagonalPositions)
@@ -261,26 +257,38 @@ public class Checker : MonoBehaviour
             Vector3 newPosition = new Vector3(clickedPosition.x, clickedPosition.y, transform.position.z - 0.16f);
             StartCoroutine(MoveSmoothly(transform.position, newPosition));
 
+           
             ResetSquareColors();
             isSelected = false;
-            if (state == CheckerState.Regular && ((transform.position.y <= gridManager.GetBottomLastRows()) || (transform.position.y >= gridManager.GetTopLastRows())))
-            {
+
+            //Debug.Log("Checker Position Y: " + transform.position.y);
+            //Debug.Log("Bottom Last Row: " + gridManager.GetBottomLastRow());
+            //Debug.Log("Top Last Row: " + gridManager.GetTopLastRow());
+            if (state == CheckerState.Regular && transform.position.y <= gridManager.GetBottomLastRow() || transform.position.y >= gridManager.GetTopLastRow())
+            {              
                 PromoteToKing();
             }
 
             if (opponentChecker != null)
             {
+                
                 opponentChecker.gameObject.SetActive(false);
-                Debug.Log("capture");
-                CheckForMultipleJumps(newPosition);
+                Debug.Log("capture");              
                 checkerManager.CheckWinConditions(opponentChecker);
-               
 
-
-
+                if (CheckForMultipleJumps(newPosition))
+                    {
+                    Debug.Log("you can jump");
+                }
             }
 
-            checkerManager.SwitchTurns();
+            
+            else
+            {
+                checkerManager.SwitchTurns();
+                Debug.Log("switch turns");
+            }
+          
         }
         else
         {
@@ -288,48 +296,31 @@ public class Checker : MonoBehaviour
         }
     }
 
-
-    private void CheckForMultipleJumps(Vector2 newPosition)
+    private bool CheckForMultipleJumps(Vector2 newPosition)
     {
-        Debug.Log("go");
-        Vector2[] newValidPositions = CalculateValidDiagonalPositions();
-        bool moreJumpsAvailable = false;
+               
+        Vector2[] newValidPositions = CalculateValidDiagonalPositions(newPosition);
+        bool moreJumpsAvailable = false;      
+     
+         Checker furtherOpponentChecker1 = gridManager.GetCheckerAtPosition(validDiagonalPositions[1]);
+          Checker furtherOpponentChecker2 = gridManager.GetCheckerAtPosition(validDiagonalPositions[2]);
+          if (furtherOpponentChecker1 != null && furtherOpponentChecker2 ==null /*&& furtherOpponentChecker.CompareTag(gameObject.tag)*/)
+          {
+               moreJumpsAvailable = true;
+                   
+          }
 
-        foreach (Vector2 newPosValid in newValidPositions)
-        {
-            if (newPosition == newPosValid)
-            {
-                Vector2 midPos = (newPosition + (Vector2)transform.position) / 2;
-                Checker furtherOpponentChecker = gridManager.GetCheckerAtPosition(midPos);
+            
 
-                if (furtherOpponentChecker != null && furtherOpponentChecker.CompareTag(gameObject.tag))
-                {
-                    continue; 
-                }
-
-                moreJumpsAvailable = true;
-                break;
-            }
-        }
-
-        if (moreJumpsAvailable)
-        {
-            Debug.Log("u can jump");
-            canMove = true;
-            HighLightSquares(newValidPositions); 
-        }
-        else
-        {
-            canMove = false; 
-            checkerManager.SwitchTurns();
-            Debug.Log("no multiple jumps");
-        }
+        Debug.Log("go" + moreJumpsAvailable);
+        return moreJumpsAvailable;
     }
+
     public void PromoteToKing()
     {
         state = CheckerState.King;
         checkerColor.color = kingTint;
-        Debug.Log("Promoted to King");
+        Debug.Log("promoted to king");
     }
 
 }

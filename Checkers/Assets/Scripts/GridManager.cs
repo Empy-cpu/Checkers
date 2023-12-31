@@ -6,19 +6,19 @@ public class GridManager : MonoBehaviour
 {
     public GameObject darkSquarePrefab;
     public GameObject lightSquarePrefab;
-    public GameObject redCheckerPrefab; 
-    public GameObject whiteCheckerPrefab; 
+    public GameObject redCheckerPrefab;
+    public GameObject whiteCheckerPrefab;
     public int rows;
     public int columns;
     public float squareSize = 1.0f;
     private List<GameObject> squares = new List<GameObject>();
 
-    public float bottomLastRows;
-    public float topLastRows;
+    public float bottomLastRow;
+    public float topLastRow;
     void Start()
     {
         GenerateCheckerboard();
-       
+
     }
 
     void GenerateCheckerboard()
@@ -36,17 +36,17 @@ public class GridManager : MonoBehaviour
             }
         }
 
-       
+
     }
 
 
     public GameObject[] GetGridSquares()
     {
-        return squares.ToArray(); 
+        return squares.ToArray();
     }
     public void PopulateCheckers()
     {
-        int rowsToFill = 3; 
+        int rowsToFill = 3;
 
         for (int row = 0; row < rowsToFill; row++)
         {
@@ -70,7 +70,7 @@ public class GridManager : MonoBehaviour
 
     public Checker GetCheckerAtPosition(Vector2 position)
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.2f); 
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(position, 0.2f);
 
         foreach (Collider2D col in colliders)
         {
@@ -84,18 +84,18 @@ public class GridManager : MonoBehaviour
         return null;
     }
 
-    public float GetBottomLastRows()
+    public float GetBottomLastRow()
     {
-        bottomLastRows = squareSize * 0;
-       
-        return bottomLastRows;
+        bottomLastRow = 0;
+
+        return bottomLastRow;
     }
 
-    public float GetTopLastRows()
+    public float GetTopLastRow()
     {
-        topLastRows = squareSize * (rows - 1);
-       
-        return topLastRows;
+        topLastRow = (rows - 1) * squareSize;
+
+        return topLastRow;
     }
 }
 
