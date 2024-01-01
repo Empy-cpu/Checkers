@@ -55,13 +55,13 @@ public class GridManager : MonoBehaviour
                 if ((row % 2 == 0 && col % 2 == 0) || (row % 2 != 0 && col % 2 != 0))
                 {
                     // Place black checkers
-                    Vector3 blackCheckerPosition = new Vector3(col * squareSize, row * squareSize, -0.19f);
+                    Vector3 blackCheckerPosition = new Vector3(col * squareSize, row * squareSize, -0.16f);
                     Instantiate(whiteCheckerPrefab, blackCheckerPosition, Quaternion.identity);
                 }
                 else
                 {
                     // Place red checkers
-                    Vector3 redCheckerPosition = new Vector3(col * squareSize, (rows - 1 - row) * squareSize, -0.19f);
+                    Vector3 redCheckerPosition = new Vector3(col * squareSize, (rows - 1 - row) * squareSize, -0.16f);
                     Instantiate(redCheckerPrefab, redCheckerPosition, Quaternion.identity);
                 }
             }
@@ -86,7 +86,7 @@ public class GridManager : MonoBehaviour
 
     public float GetBottomLastRow()
     {
-        bottomLastRow = 0;
+        bottomLastRow = 0f;
 
         return bottomLastRow;
     }
@@ -94,7 +94,7 @@ public class GridManager : MonoBehaviour
     public float GetTopLastRow()
     {
         topLastRow = (rows - 1) * squareSize;
-
+       
         return topLastRow;
     }
 }

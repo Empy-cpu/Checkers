@@ -261,12 +261,21 @@ public class Checker : MonoBehaviour
             ResetSquareColors();
             isSelected = false;
 
-            //Debug.Log("Checker Position Y: " + transform.position.y);
-            //Debug.Log("Bottom Last Row: " + gridManager.GetBottomLastRow());
-            //Debug.Log("Top Last Row: " + gridManager.GetTopLastRow());
-            if (state == CheckerState.Regular && transform.position.y <= gridManager.GetBottomLastRow() || transform.position.y >= gridManager.GetTopLastRow())
-            {              
-                PromoteToKing();
+            Debug.Log("Checker Position Y: " + transform.position.y);
+
+            if (state == CheckerState.Regular && transform.position.y <= 1f)
+            {
+                if (gameObject.CompareTag("RedChecker"))
+                {
+                    PromoteToKing();
+                }
+            }
+            else if (state == CheckerState.Regular && transform.position.y >= 6.0f)
+            {
+                if (gameObject.CompareTag("BlackChecker"))
+                {
+                    PromoteToKing();
+                }
             }
 
             if (opponentChecker != null)
@@ -277,17 +286,20 @@ public class Checker : MonoBehaviour
                 checkerManager.CheckWinConditions(opponentChecker);
 
                 if (CheckForMultipleJumps(newPosition))
-                    {
+                {
                     Debug.Log("you can jump");
                 }
+
             }
 
-            
+          
             else
             {
                 checkerManager.SwitchTurns();
                 Debug.Log("switch turns");
             }
+           
+            
           
         }
         else
@@ -304,16 +316,18 @@ public class Checker : MonoBehaviour
      
          Checker furtherOpponentChecker1 = gridManager.GetCheckerAtPosition(validDiagonalPositions[1]);
           Checker furtherOpponentChecker2 = gridManager.GetCheckerAtPosition(validDiagonalPositions[2]);
-          if (furtherOpponentChecker1 != null && furtherOpponentChecker2 ==null /*&& furtherOpponentChecker.CompareTag(gameObject.tag)*/)
+         Checker furtherOpponentChecker3 = gridManager.GetCheckerAtPosition(validDiagonalPositions[0]);
+         Checker furtherOpponentChecker4 = gridManager.GetCheckerAtPosition(validDiagonalPositions[3]);
+          if ((furtherOpponentChecker1 != null && furtherOpponentChecker2 ==null )|| (furtherOpponentChecker3 != null && furtherOpponentChecker4 == null))
           {
                moreJumpsAvailable = true;
                    
           }
 
             
-
         Debug.Log("go" + moreJumpsAvailable);
         return moreJumpsAvailable;
+        
     }
 
     public void PromoteToKing()
