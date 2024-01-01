@@ -285,6 +285,7 @@ public class Checker : MonoBehaviour
                 Debug.Log("capture");              
                 checkerManager.CheckWinConditions(opponentChecker);
 
+
                 if (CheckForMultipleJumps(newPosition))
                 {
                     Debug.Log("you can jump");
@@ -293,11 +294,11 @@ public class Checker : MonoBehaviour
             }
 
           
-            else
-            {
+            //else
+            //{
                 checkerManager.SwitchTurns();
                 Debug.Log("switch turns");
-            }
+            //}
            
             
           
