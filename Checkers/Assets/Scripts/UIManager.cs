@@ -13,9 +13,24 @@ public class UIManager : MonoBehaviour
     public GameObject settingsPanel;
     public Button SettingsBtn;
 
+    public AudioManager audioManager;
+    public Slider volumeSlider;
     private void Start()
     {
         UpdateWelcomeText();
+
+        if (volumeSlider != null)
+        {
+            volumeSlider.onValueChanged.AddListener(delegate { SetVolume(); });
+            volumeSlider.value = audioManager.GetVolume(); // Set slider value to current volume
+        }
+    }
+    public void SetVolume()
+    {
+        if (audioManager != null && volumeSlider != null)
+        {
+            audioManager.SetVolume(volumeSlider.value);
+        }
     }
 
     private void UpdateWelcomeText()
