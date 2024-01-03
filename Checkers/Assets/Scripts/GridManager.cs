@@ -29,7 +29,7 @@ public class GridManager : MonoBehaviour
             {
                 GameObject squarePrefab = (row + col) % 2 == 0 ? darkSquarePrefab : lightSquarePrefab;
 
-                Vector2 spawnPosition = new Vector2(col * squareSize, row * squareSize);
+                Vector2 spawnPosition = new Vector2(col , row );
                 GameObject square = Instantiate(squarePrefab, spawnPosition, Quaternion.identity);
                 square.transform.SetParent(transform);
                 squares.Add(square);
