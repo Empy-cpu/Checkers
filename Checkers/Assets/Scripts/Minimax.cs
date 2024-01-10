@@ -105,10 +105,11 @@ public class Minimax : MonoBehaviour
 
                 foreach (Vector2 position in validPositions)
                 {
-                    // Check if the position is within the grid bounds and not occupied by an opponent's checker
-                    if (IsWithinGridBounds(position) && gridManager.GetCheckerAtPosition(position)==null)
+                    
+                    if (IsWithinGridBounds(position) && gridManager.GetCheckerAtPosition(position) == null)
                     {
                         possibleMoves.Add((redChecker.transform.position, position));
+                       // Debug.Log("moves are " + possibleMoves.Count + " RedCheckers");
                     }
                 }
             }
