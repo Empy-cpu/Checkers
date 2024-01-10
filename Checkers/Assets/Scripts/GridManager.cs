@@ -97,6 +97,11 @@ public class GridManager : MonoBehaviour
        
         return topLastRow;
     }
+
+    public bool IsWithinGridBounds(Vector2 position)
+    {
+        return position.x >= 0 && position.x <= 7 && position.y >= 0 && position.y <= 7;
+    }
 }
 
 

@@ -49,7 +49,8 @@ public class Checker : MonoBehaviour
         }
     }
     void OnMouseDown(){
-        if (!isSelected){
+        if (!isSelected && gameObject.CompareTag("BlackChecker"))
+        {
             checkerManager.SelectChecker(this);         
         }    
     }
@@ -100,10 +101,14 @@ public class Checker : MonoBehaviour
                 forward = -1;
             }
 
-            // Calculate forward-left diagonals (two squares)
-            validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
-            // Calculate forward-right diagonals (two squares)
-            validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+         
+            if(gridManager.GetCheckerAtPosition(currentPosition) != null && gridManager.IsWithinGridBounds(currentPosition))
+            {
+                validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
+               
+                validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+            }
+          
 
 
           Vector2 checkerPos = validDiagonalPositions[0];
@@ -261,7 +266,7 @@ public class Checker : MonoBehaviour
             ResetSquareColors();
             isSelected = false;
 
-            Debug.Log("Checker Position Y: " + transform.position.y);
+           // Debug.Log("Checker Position Y: " + transform.position.y);
 
             if (state == CheckerState.Regular && transform.position.y <= 1f)
             {
@@ -326,7 +331,7 @@ public class Checker : MonoBehaviour
           }
 
             
-        Debug.Log("go" + moreJumpsAvailable);
+       // Debug.Log("go" + moreJumpsAvailable);
         return moreJumpsAvailable;
         
     }

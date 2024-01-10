@@ -98,11 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42d136c84b56c1c47819269c6b60a73a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedTint: {r: 0.92941177, g: 0.9490196, b: 1, a: 0.7764706}
+  selectedTint: {r: 0.5943396, g: 0.5720137, b: 0.51247776, a: 0.7764706}
   defaultTileColor: {r: 0.5568628, g: 0, b: 0, a: 1}
   isSelected: 0
   state: 0
   kingTint: {r: 0.8679245, g: 0.6641435, b: 0.10153075, a: 0.91764706}
+  moveSpeed: 5
+  moreJumpsAvailable: 0
 --- !u!58 &-6303881835091794545
 CircleCollider2D:
   m_ObjectHideFlags: 0

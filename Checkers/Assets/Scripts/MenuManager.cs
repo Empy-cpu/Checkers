@@ -10,11 +10,16 @@ using TMPro;
     public class MenuManager : MonoBehaviour
     {
         [SerializeField] private GameObject nameInputPanel;
+        [SerializeField] private Button confirmBtn;
         [SerializeField] private TMP_InputField settingsNameInputField;
         [SerializeField] private Slider volumeSlider;
         [SerializeField] private TMP_Text welcomeText;
+        [SerializeField] private TMP_Text placeHolderText;
+        [SerializeField] private GameObject winPanel;
+        [SerializeField] private TMP_Text winText;  
 
-        private const string usernameKey = "username";
+
+    private const string usernameKey = "username";
         private const string volumeKey = "volume";
 
         private void Start()
@@ -36,7 +41,9 @@ using TMPro;
             }
 
             settingsNameInputField.text = username;
+            placeHolderText.text = username;
             volumeSlider.value = PlayerPrefs.GetFloat(volumeKey, 1);
+           
         }
 
         // Called from OK button in name input panel or settings panel
@@ -48,7 +55,9 @@ using TMPro;
                 PlayerPrefs.SetString(usernameKey, newUsername);
                 RefreshSettings();
                  Debug.Log("username set");
-            }
+                 settingsNameInputField.gameObject.SetActive(false);
+                confirmBtn.gameObject.SetActive(false);
+             }
         }
 
         // Dynamic float function called from volume slider
@@ -60,9 +69,16 @@ using TMPro;
             RefreshSettings();
         }
 
-        // Called from multiplayer button
-        public void StartGame()
+    public void WinPanel(int isPlayer)
+    {
+        winPanel.SetActive(true);
+        winText.text = "Player " +isPlayer + "Wins";
+    }
+
+    // Called from multiplayer button
+    public void StartGame()
         {
-            SceneManager.LoadScene(1);
+        // SceneManager.LoadScene(1);
+          nameInputPanel.SetActive(false);
         }
     }

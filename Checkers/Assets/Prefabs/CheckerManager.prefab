@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4170494477581399897}
   - component: {fileID: 4170494477581399902}
+  - component: {fileID: 4170494477691290464}
   m_Layer: 0
   m_Name: CheckerManager
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4170494477581399902
 MonoBehaviour:
@@ -44,5 +45,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9addc5ec7ff15f64c8a82b0ff74184d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miniMax: {fileID: 4170494477691290464}
   allCheckers: []
+  gridManager: {fileID: 0}
+--- !u!114 &4170494477691290464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4170494477581399903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f051cefed4291c740a8d81bf33b63427, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkerManager: {fileID: 4170494477581399902}
   gridManager: {fileID: 0}
