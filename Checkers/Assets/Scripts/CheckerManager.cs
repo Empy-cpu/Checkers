@@ -147,7 +147,7 @@ public class CheckerManager : MonoBehaviour
     {
         List<(Vector2, Vector2)> possibleMoves = new List<(Vector2, Vector2)>();
         blackCheckers = GetBlackCheckers();
-        Debug.Log("Found " + blackCheckers.Count + " RedCheckers");
+       // Debug.Log("Found " + blackCheckers.Count + " RedCheckers");
 
         foreach (Checker black in blackCheckers)
         {
