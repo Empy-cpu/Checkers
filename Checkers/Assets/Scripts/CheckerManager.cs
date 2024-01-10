@@ -124,13 +124,13 @@ public class CheckerManager : MonoBehaviour
         if (player1Checkers == 0)
         {
             Debug.Log("Player 2 wins!");
-            menuManager.WinPanel(1);
+            menuManager.WinPanel(2);
             return true;
         }
         else if (player2Checkers == 0)
         {
             Debug.Log("Player 1 wins!");
-            menuManager.WinPanel(2);
+            menuManager.WinPanel(1);
 
             return true;
         }

@@ -80,7 +80,7 @@ public class Checker : MonoBehaviour
             validDiagonalPositions = CalculateValidDiagonalPositions(this.transform.position);
            
         }
-        HighLightSquares(validDiagonalPositions);
+       HighLightSquares(validDiagonalPositions);
 
     }
     public Vector2[] CalculateValidDiagonalPositions(Vector2  checkerPosition)
@@ -101,34 +101,32 @@ public class Checker : MonoBehaviour
                 forward = -1;
             }
 
-         
-            if(gridManager.GetCheckerAtPosition(currentPosition) != null && gridManager.IsWithinGridBounds(currentPosition))
+            Vector2 checkerPos1 = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
+
+            Checker checkerMid1 = gridManager.GetCheckerAtPosition(checkerPos1);
+            ///* if(gridManager.GetCheckerAtPosition(currentPosition) != null && gridManager.IsWithinGridBounds(currentPosition*/))
+            if (checkerMid1==null)
             {
                 validDiagonalPositions[0] = new Vector2(currentPosition.x - forward, currentPosition.y + forward);
                
-                validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+              
             }
-          
-
-
-          Vector2 checkerPos = validDiagonalPositions[0];
-
-           Checker checkerMid1 = gridManager.GetCheckerAtPosition(checkerPos);
-            if (checkerMid1 != null)
+            else
             {
                 validDiagonalPositions[2] = new Vector2(currentPosition.x - forward * 2, currentPosition.y + forward * 2);
-               
+
             }
-           
-            
-           checkerPos = validDiagonalPositions[1];
-              Checker checkerMid2 = gridManager.GetCheckerAtPosition(checkerPos);
-                if (checkerMid2 != null)
-                {
-                   
-                    validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
-                }
-            
+            Vector2 checkerPos2 = new Vector2(currentPosition.x + forward, currentPosition.y + forward); ;
+            Checker checkerMid2 = gridManager.GetCheckerAtPosition(checkerPos2);
+            if(checkerMid2 == null)
+            {
+                validDiagonalPositions[1] = new Vector2(currentPosition.x + forward, currentPosition.y + forward);
+            }           
+           else
+            {
+
+                validDiagonalPositions[3] = new Vector2(currentPosition.x + forward * 2, currentPosition.y + forward * 2);
+            }
 
         }
         else//for king
